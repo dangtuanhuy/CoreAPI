@@ -45,7 +45,7 @@ namespace WebApplication2
 
             //    await context.Response.WriteAsync("Hello world");
             //});
-            //context.SeedDataContext();
+            context.SeedDataContext();
             app.UseMvc();
         }
     }
