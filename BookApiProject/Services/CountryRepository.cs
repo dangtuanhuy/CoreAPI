@@ -17,19 +17,19 @@ namespace BookApiProject.Services
 
         public bool CountryExists(int countryId)
         {
-            return _countryContext.Countries.Any(c => c.Id == countryId);
+            return _countryContext.Country.Any(c => c.Id == countryId);
         }
 
-        public bool CreateCountry(Country country)
+        public async Task<bool> CreateCountry(Country country)
         {
-            _countryContext.Add(country);
-            return Save();
+            await _countryContext.AddAsync(country);
+            return await Save();
         }
 
-        public bool DeleteCountry(Country country)
+        public async Task<bool> DeleteCountry(Country country)
         {
             _countryContext.Remove(country);
-            return Save();
+            return await Save();
         }
 
         public ICollection<Author> GetAuthorsFromACountry(int countryId)
@@ -39,12 +39,12 @@ namespace BookApiProject.Services
 
         public ICollection<Country> GetCountries()
         {
-            return _countryContext.Countries.OrderBy(c => c.Name).ToList();
+            return _countryContext.Country.OrderBy(c => c.Name).ToList();
         }
 
         public Country GetCountry(int countryId)
         {
-            return _countryContext.Countries.Where(c => c.Id == countryId).FirstOrDefault();
+            return _countryContext.Country.Where(c => c.Id == countryId).FirstOrDefault();
         }
 
         public Country GetCountryOfAnAuthor(int authorId)
@@ -54,22 +54,22 @@ namespace BookApiProject.Services
 
         public bool IsDuplicateCountryName(int countryId, string countryName)
         {
-            var country = _countryContext.Countries.Where(c => c.Name.Trim().ToUpper() == countryName.Trim().ToUpper()
+            var country = _countryContext.Country.Where(c => c.Name.Trim().ToUpper() == countryName.Trim().ToUpper()
                                                 && c.Id != countryId).FirstOrDefault();
 
             return country == null ? false : true;
         }
 
-        public bool Save()
+        public async Task<bool> Save()
         {
-            var saved = _countryContext.SaveChanges();
+            var saved = await _countryContext.SaveChangesAsync();
             return saved >= 0 ? true : false;
         }
 
-        public bool UpdateCountry(Country country)
+        public async Task<bool> UpdateCountryAsync(Country country)
         {
             _countryContext.Update(country);
-            return Save();
+            return await Save();
         }
     }
 }

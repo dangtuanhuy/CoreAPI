@@ -130,7 +130,7 @@ namespace BookApiProject.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(422)]
         [ProducesResponseType(500)]
-        public IActionResult CreateCountry([FromBody]Country countryToCreate)
+        public async Task<IActionResult> CreateCountryAsync([FromBody]Country countryToCreate)
         {
             if (countryToCreate == null)
                 return BadRequest(ModelState);
@@ -148,7 +148,7 @@ namespace BookApiProject.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if(!_countryRepository.CreateCountry(countryToCreate))
+            if(!await _countryRepository.CreateCountry(countryToCreate))
             {
                 ModelState.AddModelError("", $"Something went wrong saving {countryToCreate.Name}");
                 return StatusCode(500, ModelState);
@@ -164,7 +164,7 @@ namespace BookApiProject.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(422)] 
         [ProducesResponseType(500)]        
-        public IActionResult UpdateCountry(int countryId, [FromBody]Country updatedCountryInfo)
+        public async Task<IActionResult> UpdateCountryAsync(int countryId, [FromBody]Country updatedCountryInfo)
         {
             if (updatedCountryInfo == null)
                 return BadRequest(ModelState);
@@ -184,7 +184,7 @@ namespace BookApiProject.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_countryRepository.UpdateCountry(updatedCountryInfo))
+            if (!await _countryRepository.UpdateCountryAsync(updatedCountryInfo))
             {
                 ModelState.AddModelError("", $"Something went wrong updating {updatedCountryInfo.Name}");
                 return StatusCode(500, ModelState);
@@ -200,7 +200,7 @@ namespace BookApiProject.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(409)]
         [ProducesResponseType(500)]
-        public IActionResult DeleteCountry(int countryId)
+        public async Task<IActionResult> DeleteCountryAsync(int countryId)
         {
             if (!_countryRepository.CountryExists(countryId))
                 return NotFound();
@@ -217,7 +217,7 @@ namespace BookApiProject.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_countryRepository.DeleteCountry(countryToDelete))
+            if (!await _countryRepository.DeleteCountry(countryToDelete))
             {
                 ModelState.AddModelError("", $"Something went wrong deleting {countryToDelete.Name}");
                 return StatusCode(500, ModelState);

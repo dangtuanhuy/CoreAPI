@@ -15,9 +15,9 @@ namespace BookApiProject.Services
         bool CountryExists(int countryId);
         bool IsDuplicateCountryName(int countryId, string countryName);
 
-        bool CreateCountry(Country country);
-        bool UpdateCountry(Country country);
-        bool DeleteCountry(Country country);
-        bool Save();
+        Task<bool> CreateCountry(Country country);
+        Task<bool> UpdateCountryAsync(Country country);
+        Task<bool> DeleteCountry(Country country);
+        Task<bool> Save();
     }
 }
